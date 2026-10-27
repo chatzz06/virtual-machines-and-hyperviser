@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypervisor Information</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>VM Hypervisor</h2>
+    <p class="sidebar-subtitle">Management System</p>
+
+    <a href="/">Dashboard</a>
+    <a href="/create">Create VM</a>
+    <a href="/manage">Manage VMs</a>
+    <a href="/hypervisor" class="active">Hypervisor Info</a>
+
+    <div class="sidebar-footer">
+        <p>Virtualization Project</p>
+        <small>Operating Systems</small>
+    </div>
+</div>
+
+<div class="main-content">
+
+    <header>
+        <div>
+            <h1>Hypervisor Information</h1>
+            <p>Understanding virtualization technology</p>
+        </div>
+    </header>
+
+    <div class="panel">
+        <h2>What is a Hypervisor?</h2>
+        <p>
+            A hypervisor is software or firmware that creates and manages
+            virtual machines. It allows multiple operating systems to
+            share the resources of a physical computer.
+        </p>
+    </div>
+
+    <div class="hypervisor-grid">
+
+        <div class="panel hypervisor-card">
+            <div class="hypervisor-icon">Ⅰ</div>
+            <h2>Type 1 Hypervisor</h2>
+            <h4>Bare-Metal Hypervisor</h4>
+
+            <p>
+                A Type 1 hypervisor runs directly on physical hardware
+                without requiring a conventional host operating system.
+            </p>
+
+            <h4>Examples</h4>
+            <ul>
+                <li>VMware ESXi</li>
+                <li>Microsoft Hyper-V</li>
+                <li>Xen</li>
+            </ul>
+
+            <h4>Characteristics</h4>
+            <ul>
+                <li>Direct hardware access</li>
+                <li>Common in data centers</li>
+                <li>Centralized VM management</li>
+            </ul>
+        </div>
+
+        <div class="panel hypervisor-card">
+            <div class="hypervisor-icon">Ⅱ</div>
+            <h2>Type 2 Hypervisor</h2>
+            <h4>Hosted Hypervisor</h4>
+
+            <p>
+                A Type 2 hypervisor runs as an application on top of
+                an existing operating system.
+            </p>
+
+            <h4>Examples</h4>
+            <ul>
+                <li>Oracle VirtualBox</li>
+                <li>VMware Workstation</li>
+                <li>Parallels Desktop</li>
+            </ul>
+
+            <h4>Characteristics</h4>
+            <ul>
+                <li>Runs on a host OS</li>
+                <li>Useful for learning and testing</li>
+                <li>Easy desktop installation</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="panel">
+        <h2>Hypervisor Architecture</h2>
+
+        <div class="architecture">
+
+            <div class="architecture-box hardware">
+                Physical Hardware
+                <small>CPU | RAM | Storage</small>
+            </div>
+
+            <div class="architecture-arrow">↓</div>
+
+            <div class="architecture-box hypervisor">
+                Hypervisor Layer
+                <small>Resource Allocation and VM Management</small>
+            </div>
+
+            <div class="architecture-arrow">↓</div>
+
+            <div class="guest-grid">
+                <div class="architecture-box guest">
+                    Virtual Machine 1
+                    <small>Guest OS</small>
+                </div>
+
+                <div class="architecture-box guest">
+                    Virtual Machine 2
+                    <small>Guest OS</small>
+                </div>
+
+                <div class="architecture-box guest">
+                    Virtual Machine 3
+                    <small>Guest OS</small>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        Virtual Machine and Hypervisor Management System |
+        Academic Software Project
+    </footer>
+
+</div>
+
+</body>
+</html>

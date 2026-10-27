@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Virtual Machines</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <h2>VM Hypervisor</h2>
+    <p class="sidebar-subtitle">Management System</p>
+
+    <a href="/">Dashboard</a>
+    <a href="/create">Create VM</a>
+    <a href="/manage" class="active">Manage VMs</a>
+    <a href="/hypervisor">Hypervisor Info</a>
+
+    <div class="sidebar-footer">
+        <p>Virtualization Project</p>
+        <small>Operating Systems</small>
+    </div>
+
+</div>
+
+<div class="main-content">
+
+    <header>
+        <div>
+            <h1>Manage Virtual Machines</h1>
+            <p>Control and monitor your virtual machines</p>
+        </div>
+
+        <a href="/create" class="primary-btn">+ Add New VM</a>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <div class="vm-grid">
+
+        {% for vm in vms %}
+
+        <div class="vm-card">
+
+            <div class="vm-card-top">
+
+                <div class="vm-icon">▣</div>
+
+                <span class="status {{ vm.status|lower }}">
+                    {{ vm.status }}
+                </span>
+
+            </div>
+
+            <h3>{{ vm.name }}</h3>
+
+            <p class="vm-os">{{ vm.os }}</p>
+
+            <div class="vm-details">
+
+                <div>
+                    <span>CPU Cores</span>
+                    <strong>{{ vm.cpu }}</strong>
+                </div>
+
+                <div>
+                    <span>Memory</span>
+                    <strong>{{ vm.ram }} GB</strong>
+                </div>
+
+                <div>
+                    <span>VM ID</span>
+                    <strong>#{{ vm.id }}</strong>
+                </div>
+
+            </div>
+
+            <div class="vm-actions">
+
+                {% if vm.status == 'Running' %}
+
+                    <a href="{{ url_for('stop_vm', vm_id=vm.id) }}"
+                       class="action-btn stop">
+                        Stop VM
+                    </a>
+
+                {% else %}
+
+                    <a href="{{ url_for('start_vm', vm_id=vm.id) }}"
+                       class="action-btn start">
+                        Start VM
+                    </a>
+
+                {% endif %}
+
+                <button
+                    type="button"
+                    class="action-btn delete"
+                    onclick='confirmDelete({{ vm.id }}, {{ vm.name|tojson }})'>
+                    Delete
+                </button>
+
+            </div>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <h3>No Virtual Machines Found</h3>
+
+            <p>Create a new VM to see it here.</p>
+
+            <a href="/create" class="primary-btn">
+                Create VM
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

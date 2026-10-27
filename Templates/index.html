@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VM Hypervisor Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>VM Hypervisor</h2>
+    <p class="sidebar-subtitle">Management System</p>
+
+    <a href="/" class="active">Dashboard</a>
+    <a href="/create">Create VM</a>
+    <a href="/manage">Manage VMs</a>
+    <a href="/hypervisor">Hypervisor Info</a>
+
+    <div class="sidebar-footer">
+        <p>Virtualization Project</p>
+        <small>Operating Systems</small>
+    </div>
+</div>
+
+<div class="main-content">
+
+    <header>
+        <div>
+            <h1>Dashboard</h1>
+            <p>Monitor and manage your virtual machines</p>
+        </div>
+        <a href="/create" class="primary-btn">+ Create VM</a>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-icon blue">▣</div>
+            <p>Total Virtual Machines</p>
+            <h2>{{ total_vms }}</h2>
+            <span>Registered machines</span>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon green">●</div>
+            <p>Running VMs</p>
+            <h2>{{ running_vms }}</h2>
+            <span>Active instances</span>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon orange">◷</div>
+            <p>Stopped VMs</p>
+            <h2>{{ stopped_vms }}</h2>
+            <span>Inactive instances</span>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon purple">⚙</div>
+            <p>Allocated CPU Cores</p>
+            <h2>{{ total_cpu }}</h2>
+            <span>Total assigned cores</span>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon cyan">▤</div>
+            <p>Allocated RAM</p>
+            <h2>{{ total_ram }} GB</h2>
+            <span>Total assigned memory</span>
+        </div>
+
+    </div>
+
+    <div class="content-grid">
+
+        <div class="panel">
+            <div class="panel-header">
+                <h3>Virtual Machine Overview</h3>
+                <a href="/manage">View All</a>
+            </div>
+
+            {% if vms %}
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>VM Name</th>
+                            <th>Operating System</th>
+                            <th>CPU</th>
+                            <th>RAM</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for vm in vms %}
+                        <tr>
+                            <td><strong>{{ vm.name }}</strong></td>
+                            <td>{{ vm.os }}</td>
+                            <td>{{ vm.cpu }} Cores</td>
+                            <td>{{ vm.ram }} GB</td>
+                            <td>
+                                <span class="status {{ vm.status|lower }}">
+                                    {{ vm.status }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if vm.status == 'Running' %}
+                                <a href="/stop/{{ vm.id }}" class="action-btn stop">Stop</a>
+                                {% else %}
+                                <a href="/start/{{ vm.id }}" class="action-btn start">Start</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+                <div class="empty-state">
+                    <h3>No Virtual Machines Yet</h3>
+                    <p>Create your first virtual machine to get started.</p>
+                    <a href="/create" class="primary-btn">Create Virtual Machine</a>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="panel chart-panel">
+            <h3>VM Status Distribution</h3>
+            <canvas id="vmChart"></canvas>
+        </div>
+
+    </div>
+
+    <div class="panel resource-panel">
+        <h3>Resource Allocation</h3>
+
+        <div class="resource-item">
+            <div class="resource-heading">
+                <span>CPU Cores Allocated</span>
+                <strong>{{ total_cpu }} Cores</strong>
+            </div>
+            <div class="progress">
+                <div class="progress-fill cpu-fill"
+                     style="width: {{ [total_cpu * 10, 100]|min }}%">
+                </div>
+            </div>
+        </div>
+
+        <div class="resource-item">
+            <div class="resource-heading">
+                <span>RAM Allocated</span>
+                <strong>{{ total_ram }} GB</strong>
+            </div>
+            <div class="progress">
+                <div class="progress-fill ram-fill"
+                     style="width: {{ [total_ram * 5, 100]|min }}%">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Virtual Machine and Hypervisor Management System |
+        Academic Software Project
+    </footer>
+
+</div>
+
+<script>
+    const runningVMs = {{ running_vms }};
+    const stoppedVMs = {{ stopped_vms }};
+</script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

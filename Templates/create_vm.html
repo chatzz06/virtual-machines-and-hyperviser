@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Virtual Machine</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>VM Hypervisor</h2>
+    <p class="sidebar-subtitle">Management System</p>
+
+    <a href="/">Dashboard</a>
+    <a href="/create" class="active">Create VM</a>
+    <a href="/manage">Manage VMs</a>
+    <a href="/hypervisor">Hypervisor Info</a>
+
+    <div class="sidebar-footer">
+        <p>Virtualization Project</p>
+        <small>Operating Systems</small>
+    </div>
+</div>
+
+<div class="main-content">
+
+    <header>
+        <div>
+            <h1>Create Virtual Machine</h1>
+            <p>Configure a new virtual machine</p>
+        </div>
+        <a href="/" class="secondary-btn">Back to Dashboard</a>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <div class="form-container">
+
+        <div class="form-heading">
+            <h2>VM Configuration</h2>
+            <p>Enter the required details below.</p>
+        </div>
+
+        <form action="/create" method="POST">
+
+            <div class="form-group">
+                <label for="name">Virtual Machine Name</label>
+                <input type="text"
+                       id="name"
+                       name="name"
+                       placeholder="Example: Ubuntu-Server"
+                       maxlength="80"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="os">Operating System</label>
+                <select id="os" name="os" required>
+                    <option value="">Select Operating System</option>
+                    <option value="Ubuntu Linux">Ubuntu Linux</option>
+                    <option value="Windows 11">Windows 11</option>
+                    <option value="Windows Server">Windows Server</option>
+                    <option value="Debian Linux">Debian Linux</option>
+                    <option value="Fedora Linux">Fedora Linux</option>
+                    <option value="Kali Linux">Kali Linux</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label for="cpu">CPU Cores</label>
+                    <select id="cpu" name="cpu" required>
+                        <option value="1">1 Core</option>
+                        <option value="2">2 Cores</option>
+                        <option value="4">4 Cores</option>
+                        <option value="6">6 Cores</option>
+                        <option value="8">8 Cores</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="ram">RAM Allocation</label>
+                    <select id="ram" name="ram" required>
+                        <option value="1">1 GB</option>
+                        <option value="2">2 GB</option>
+                        <option value="4">4 GB</option>
+                        <option value="8">8 GB</option>
+                        <option value="16">16 GB</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="info-box">
+                <strong>Note:</strong>
+                This application simulates VM resource allocation.
+                It does not reserve physical CPU or RAM.
+            </div>
+
+            <button type="submit" class="primary-btn full-btn">
+                Create Virtual Machine
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>
